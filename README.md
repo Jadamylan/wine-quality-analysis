@@ -1,119 +1,165 @@
 # What Makes a Good Wine?
 
-Interactive portfolio site for **“Vino, at its finest”** — a 2022 graduate statistics project by [Jada Mylan Smith](https://github.com/Jadamylan) and Chandnee Das (STAT 632, CSU East Bay).
+### Same question. Better analytical judgment.
 
-**Live site:** [https://jadamylan.github.io/wine-quality-analysis/](https://jadamylan.github.io/wine-quality-analysis/)
+This is the interactive portfolio version of **“Vino, at its finest,”** a 2022 graduate statistics project by [Jada Mylan Smith](https://github.com/Jadamylan) and Chandnee Das for STAT 632 at CSU East Bay.
 
-The page is a single static `index.html` file. Open it locally in a browser, or visit the GitHub Pages URL above.
+**Portfolio site:** [jadamylan.github.io/wine-quality-analysis](https://jadamylan.github.io/wine-quality-analysis/)
+
+The original project asked:
+
+> **Which measurable chemical properties of Portuguese Vinho Verde help explain perceived wine quality?**
+
+I keep this project in my portfolio for two reasons:
+
+1. the original analysis still shows a solid statistics foundation
+2. revisiting it makes it easy to show how differently I think about modeling now
 
 ---
 
-## Original 2022 analysis
+## The dataset
 
-The original question was straightforward: **which measurable chemical properties of Portuguese Vinho Verde help explain perceived wine quality?**
+The 2022 analysis used the Cortez et al. wine-quality dataset, which combines physicochemical lab measurements with an expert quality score.
 
-The work used the Cortez et al. wine-quality dataset (physicochemical tests plus an expert quality score). The combined red-and-white table was narrowed to **white wine**: 4,898 observations, 11 lab measures, and a discrete quality score observed from 3 to 9.
+The original project narrowed the combined red + white data to **white wine**:
 
-### Methodology
+- **4,898 observations**
+- **11 physicochemical measures**
+- quality scores observed from **3 to 9**
 
-The 2022 analysis mixed classical regression with tree-based exploration:
+---
 
-1. **Exploratory correlation** across acidity, sugar, chlorides, sulfur dioxide, density, pH, sulphates, and alcohol.
-2. **Multiple linear regression** with quality as the response.
-3. **Model selection** from a full model (`lm1`) to a reduced model (`lm2`) using AIC / adjusted R², retaining 8 predictors.
-4. **Transformations**, including a log transform on volatile acidity (`lm3`) to handle skew.
-5. **Diagnostics and outlier investigation** (`lm4`).
-6. **Regression trees**, where alcohol was the first split and volatile acidity / density were important later splitters.
+## What we did in 2022
 
-Reported adjusted R² values were modest even after those steps:
+The original workflow included:
+
+1. exploratory correlation
+2. multiple linear regression
+3. model selection using AIC and adjusted R²
+4. variable transformations
+5. model diagnostics and outlier investigation
+6. regression trees
+
+### Reported model results
 
 | Model | Adj. R² | AIC |
-|---|---|---|
+|---|---:|---:|
 | Full (`lm1`) | 0.2775 | 11131 |
 | Reduced (`lm2`) | 0.2778 | 11127 |
 | Log transform (`lm3`) | 0.2818 | 11100 |
 | Outlier check (`lm4`) | 0.2861 | 11058 |
 
-That ceiling is part of the finding. Chemistry explained about **29%** of the variation in quality. The rest is human taste, context, and variables the lab sheet never measured.
+The most interesting part is the ceiling.
 
-### What stood out
+Even after several modeling choices, the analysis explained only about **29% of the observed variation in quality**.
 
-- **Alcohol** had a positive relationship with quality and was the first split in the regression tree.
-- **Volatile acidity** had a negative relationship; the log transform improved that term.
-- **Density** showed a strong negative correlation and appeared as an important tree splitter.
+That is not a failed result.
 
-The original project write-up is archived at [STAT632-Final-Project-details](https://github.com/Jadamylan/STAT632-Final-Project-details).
+It is a reminder that a lab sheet is only one part of why humans decide a wine is good.
 
 ---
 
-## What this site is (and is not)
+## What stood out
 
-This version visualizes **results reported in the 2022 project**. It is labeled that way on the page on purpose.
+In the original analysis:
 
-It is **not** yet a fresh row-level rerun. Add `data/wine-quality-white-and-red.csv` before presenting any new coefficients, cross-validated metrics, or a “build your wine” predictor as newly estimated.
+- **alcohol** had a positive relationship with quality and appeared as the first regression-tree split
+- **volatile acidity** had a negative relationship with quality
+- **density** had a strong negative correlation and appeared as an important tree splitter
+
+The original course-project materials are preserved in [STAT632-Final-Project-details](https://github.com/Jadamylan/STAT632-Final-Project-details).
 
 ---
 
-## 2026 extension
+## 2022 Jada vs. 2026 Jada
 
-The interesting professional story is not “I redid an old assignment.” It is **2022 Jada vs. 2026 Jada**: same question, a more mature analytical stack.
+This is the part of the project I care about most now.
 
-Planned next pass:
+If I started the analysis today, I would make several different choices.
 
-- Treat quality as **ordered and discrete** (ordinal logistic regression), not only as a continuous score.
-- Add a **train/test split** and repeated cross-validation; report MAE / RMSE.
-- Compare the interpretable linear model with **random forest, gradient boosting, and GAMs**.
-- Bring **red wine** back and test type interactions.
-- Add **feature importance / SHAP-style** explanations.
-- If new data exists, add producer, vintage, region, and fermentation/aging variables — the missing ~70% is the interesting part.
+### 1. Treat the outcome more carefully
 
-Code for that rerun will live under `analysis/` once the original CSV is in `data/`.
+The quality score is **ordered and discrete**.
+
+I would compare the original linear-regression framing with an **ordinal model** instead of automatically treating the outcome like a fully continuous measurement.
+
+### 2. Separate model fitting from model evaluation
+
+The original project focused heavily on fit statistics.
+
+A modern rerun should include:
+
+- train / test separation
+- repeated cross-validation
+- MAE / RMSE where appropriate
+- out-of-sample comparison
+
+### 3. Compare explanation and prediction on purpose
+
+I would keep an interpretable baseline, then compare it with:
+
+- random forest
+- gradient boosting
+- GAMs
+
+The goal would not be “use the fanciest model.”
+
+It would be to understand what predictive flexibility actually buys us.
+
+### 4. Bring the missing context into the question
+
+Chemistry leaves a lot unexplained.
+
+If richer data were available, I would want variables such as:
+
+- producer
+- vintage
+- region
+- fermentation approach
+- aging
+- sensory / tasting context
+
+The unexplained portion is not just model error. It is also a clue that the dataset does not contain the whole experience.
+
+---
+
+## What this site is — and is not
+
+The current site visualizes **results reported in the 2022 project**.
+
+It is intentionally **not** presented as a new row-level rerun.
+
+Before publishing any new coefficients, cross-validated metrics, feature importance, or a “build your wine” predictor, the original row-level CSV should be restored to `data/` and the refreshed analysis should be reproducible from code.
+
+That distinction matters to me.
 
 ---
 
 ## Repository layout
 
-Current (GitHub Pages–ready):
-
-```text
-wine-quality-analysis/
-├── index.html          ← site root (required for Pages)
-├── README.md
-├── .nojekyll           ← skip Jekyll so the HTML is served as-is
-└── data/
-    └── .gitkeep        ← add wine-quality-white-and-red.csv here
-```
-
-Intended later:
-
 ```text
 wine-quality-analysis/
 ├── index.html
 ├── README.md
-├── data/
-│   └── wine-quality-white-and-red.csv
-├── analysis/
-│   ├── original-analysis.R
-│   └── modern-analysis.R
-└── assets/
-    ├── images/
-    └── charts/
+├── .nojekyll
+└── data/
+    └── .gitkeep
+```
+
+Planned modern-analysis extension:
+
+```text
+analysis/
+├── original-analysis.R
+└── modern-analysis.R
 ```
 
 ---
 
-## GitHub Pages
+## Data source
 
-This repo is configured to deploy from the `main` branch, folder `/` (root). After the first Pages build, the public URL is:
-
-`https://jadamylan.github.io/wine-quality-analysis/`
-
-If you ever need to turn Pages back on: **Settings → Pages → Build and deployment → Deploy from a branch → `main` / `/ (root)`**.
-
-Official docs: [Creating a GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+UCI / Cortez et al. **Wine Quality** dataset: Portuguese Vinho Verde physicochemical measurements and expert quality scores.
 
 ---
 
-## Data
-
-UCI / Cortez et al. *Wine Quality* dataset (Portuguese Vinho Verde physicochemical tests and expert quality scores). Place the combined red-and-white CSV at `data/wine-quality-white-and-red.csv` when you are ready to rerun the analysis.
+**Tools / methods:** R · regression · model diagnostics · regression trees · statistical storytelling · GitHub Pages
